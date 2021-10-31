@@ -52,13 +52,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     async registerByGoogle() {
         this.isGoogleLoading = true;
-        await this.appService.registerByGoogle();
+        this.toastr.error('registerByGoogle'); //await this.appService.registerByGoogle();
         this.isGoogleLoading = false;
     }
 
     async registerByFacebook() {
         this.isFacebookLoading = true;
-        await this.appService.registerByFacebook();
+        this.toastr.error('registerByFacebook'); //await this.appService.registerByFacebook();
         this.isFacebookLoading = false;
     }
 

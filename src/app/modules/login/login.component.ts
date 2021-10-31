@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             'login-page'
         );
         this.loginForm = new FormGroup({
-            email: new FormControl(null, Validators.required),
+            username: new FormControl(null, Validators.required),
             password: new FormControl(null, Validators.required)
         });
     }
@@ -41,6 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     async loginByAuth() {
         if (this.loginForm.valid) {
             this.isAuthLoading = true;
+            //console.log(this.loginForm.value)
             await this.appService.loginByAuth(this.loginForm.value);
             this.isAuthLoading = false;
         } else {
@@ -50,13 +51,13 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     async loginByGoogle() {
         this.isGoogleLoading = true;
-        await this.appService.loginByGoogle();
+        this.toastr.error('loginByGoogle'); //await this.appService.loginByGoogle();
         this.isGoogleLoading = false;
     }
 
     async loginByFacebook() {
         this.isFacebookLoading = true;
-        await this.appService.loginByFacebook();
+        this.toastr.error('loginByFacebook'); //await this.appService.loginByFacebook();
         this.isFacebookLoading = false;
     }
 

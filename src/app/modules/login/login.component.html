@@ -8,14 +8,14 @@
         <form [formGroup]="loginForm" (ngSubmit)="loginByAuth()">
             <div class="input-group mb-3">
                 <input
-                    formControlName="email"
-                    type="email"
+                    formControlName="username"
+                    type="text"
                     class="form-control"
-                    placeholder="Email"
+                    placeholder="Username"
                 />
                 <div class="input-group-append">
                     <div class="input-group-text">
-                        <span class="fas fa-envelope"></span>
+                        <span class="fas fa-user"></span>
                     </div>
                 </div>
             </div>
