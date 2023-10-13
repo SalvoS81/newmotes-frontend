@@ -41,7 +41,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
 
     async registerByAuth() {
-        if (this.registerForm.valid) {
+          if (this.registerForm.valid) {
             this.isAuthLoading = true;
             await this.appService.registerByAuth(this.registerForm.value);
             this.isAuthLoading = false;

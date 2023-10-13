@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {shareReplay, do } from 'rxjs/operators';
+import {shareReplay, tap} from 'rxjs/operators';
 
 //import { ApiService } from './api.service';
+import moment from 'moment';
+import { ConditionalExpr } from '@angular/compiler';
 
 
 @Injectable({
@@ -14,6 +16,10 @@ import {shareReplay, do } from 'rxjs/operators';
 export class AppService {
     public user: any = null;
     backEndURL: string;
+
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      };
 
     constructor(
         private router: Router, 
@@ -25,13 +31,14 @@ export class AppService {
     }
 
     async loginByAuth({username, password}): Promise<any> {
-        return this.http.post(`${this.backEndURL}/dj-rest-auth/login/`, {username, password})
-            //.subscribe(res => this.setSession) 
-            .pipe(shareReplay());
+        const body = {username: username, password: password};
+        console.log(body);
+        return this.http.post<any>(`${this.backEndURL}/dj-rest-auth/login/`, body, this.httpOptions)
+            .subscribe(res => this.setSession);           
     }
 
     private setSession(authResult) {
-        //const expiresAt = moment().add(authResult.expiresIn,'second');
+        const expiresAt = moment().add(authResult.expiresIn,'second');
 
         localStorage.setItem('id_token', authResult.idToken);
         localStorage.setItem("expires_at", JSON.stringify(expiresAt.valueOf()) );
@@ -74,11 +81,11 @@ export class AppService {
         }
     }
 
-    /* async getProfile() {
+    async getProfile() {
         try {
             //this.user = //await Gatekeeper.getProfile();
-            let response = await this.apiservice.getProfile(); 
-            console.log(response);
+            //let response = await this.apiservice.getProfile(); 
+            console.log("response");
         } catch (error) {
             //this.toastr.error(error.response.data.message);
             this.toastr.error(error.message);
@@ -86,7 +93,7 @@ export class AppService {
             console.log(error);
             throw error;
         }
-    } */
+    }
 
     logout() {
         localStorage.removeItem('token');
@@ -98,6 +105,6 @@ export class AppService {
     getBackEndUrl(): string {
         const segements = document.URL.split('/');
         const reggie = new RegExp(/localhost/);
-        return reggie.test(segements[2]) ? 'http://localhost:8000' : 'https://localhost:8000';
+        return reggie.test(segements[2]) ? 'http://localhost:8000' : 'http://localhost:8000';
       }
 }
